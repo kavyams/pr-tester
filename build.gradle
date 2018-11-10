@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.+"
+    compile 'org.slf4j:slf4j-log4j12:1.7.25'
+    compile 'org.json:json:20141113'
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src']
+        }
+    }
+
+    test {
+        groovy {
+            // Control test source dirs with "testSources" Gradle property
+            // For whatever reason, gradle with groovy seems to totally ignore both the `--tests` command
+            // line switch or test filter specs specified here. Go figure.
+            srcDirs = (project.hasProperty("testSources") ?
+                    Eval.me(project.getProperty("testSources")) :
+                    ['test'])
+        }
+    }
+}
