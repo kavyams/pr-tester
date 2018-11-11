@@ -6,18 +6,17 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
-class ListPRTests extends Specification {
-
+class CreatePRTests extends Specification {
 
     def setupSpec() {
         //do any set up necessary here
     }
 
-    @Unroll("('#owner', '#repo', '#state')")
-    def "Assert that listed PRs match expected state"() {
+    @Unroll("('#owner', '#repo')")
+    def "Assert success"() {
 
-        log.info("Asserting state of listed PRs for owner(%s), repo(%s), " +
-                "state" + "(%s)" + " " + ".\n ", owner, repo, state);
+        log.info("Asserting success on creating a PR for owner(%s), repo(%s),"
+                + ".\n ", owner, repo,);
 
         def states = ListPRHelper.getPRStates(owner, repo, state);
 
