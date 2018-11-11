@@ -11,8 +11,7 @@ class RestUtils {
 
     static
     def httpCall(baseUrl, path, query, method = Method.POST, contentType =
-            ContentType.JSON,
-                 Map requestHeaders = [:], String bodyString = "") {
+            ContentType.JSON, Map requestHeaders = [:], Object jsonObject = "") {
         try {
             def ret = null
             def http = new HTTPBuilder(baseUrl)
@@ -20,8 +19,8 @@ class RestUtils {
             http.request(method, contentType) {
                 uri.path = path
                 uri.query = query
-                if (!bodyString.isEmpty()) {
-                    body = bodyString
+                if (!jsonObject.isEmpty()) {
+                    body = jsonObject
                 }
 
                 headers."User-Agent" = Constants.USER_AGENT
@@ -41,7 +40,10 @@ class RestUtils {
                                     "Reason: %s, BaseUrl: %s, Path: %s, Query: %s",
                             resp.getStatusLine(),
                             reader,
-                            baseUrl, path)
+                            baseUrl,
+                            path,
+                            query
+                    )
                     throw new GroovyRuntimeException(failureMsg)
                 }
             }
@@ -61,6 +63,18 @@ class RestUtils {
     static
     def getResponse(baseUrl, path, query, contentType = ContentType.JSON) {
         return httpCall(baseUrl, path, query, Method.GET, contentType)
+    }
+
+    static
+    def postRequest(baseUrl, path, query, jsonObject, contentType =
+            ContentType.JSON, headers = [:]) {
+        return httpCall(baseUrl, path, query, Method.POST, contentType, headers, jsonObject)
+    }
+
+    static
+    def patchRequest(baseUrl, path, query, jsonObject, contentType =
+            ContentType.JSON, headers = [:]) {
+        return httpCall(baseUrl, path, query, Method.PATCH, contentType, headers, jsonObject)
     }
 
     static def toUrl(baseUrl, path) {

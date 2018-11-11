@@ -1,6 +1,6 @@
 package groovy.github
 
-import groovy.github.helpers.PullRequestHelper
+import groovy.github.helpers.ListPRHelper
 import groovy.util.logging.Slf4j
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -19,7 +19,7 @@ class ListPRTests extends Specification {
         log.info("Asserting state of listed PRs for owner(%s), repo(%s), " +
                 "state" + "(%s)" + " " + ".\n ", owner, repo, state);
 
-        def states = PullRequestHelper.getPRStates(owner, repo, state);
+        def states = ListPRHelper.getPRStates(owner, repo, state);
 
 
         expect:
@@ -40,7 +40,7 @@ class ListPRTests extends Specification {
                 "decreasing order of recency" + " owner" + "(%s), repo(%s)" +
                 ".\n ", owner, repo);
 
-        def commitDates = PullRequestHelper.getOrderedCommitDates(owner, repo);
+        def commitDates = ListPRHelper.getOrderedCommitDates(owner, repo);
 
 
         expect:
