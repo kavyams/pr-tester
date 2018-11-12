@@ -63,12 +63,12 @@ test {
         events "started", "passed", "skipped", "failed", "standardOut", "standardError"
     }
 }
-
-task testJar(type: Jar) {
-    classifier = 'tests'
-    from sourceSets.test.output
-}
-
-applicationDistribution.from(testJar) {
-    into "tests"
-}
+//
+//task testJar(type: Jar) {
+//    classifier = 'tests'
+//    from sourceSets.test.output
+//}
+//
+//applicationDistribution.from(testJar) {
+//    into "tests"
+//}
