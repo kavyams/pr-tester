@@ -18,6 +18,8 @@ Primary use cases of the framework
 * Multiplex over query parameters easily.
 * Run the same test over multiple combinations of test parameters without having to duplicate code.
 * Allow for clean up in case of data modification.
+* Allow for retries in case of failure.
+* Allow for categorization of tests into different buckets.
 
 Possible Test Cases
 -------------------
