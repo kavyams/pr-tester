@@ -68,10 +68,6 @@ is heavily demonstrated in 3(i) and 4(i).
 
 Running the tests
 -----------------
-* Install gradle
-
-        brew install gradle
-    
 * In order for create PR and update PR tests to work, you will need to set up a GITHUB_TOKEN to get write access to the repo. You can use my access token for the purposes of this demo by running the following command in your shell. You will find <token> in your email.
 
         export GITHUB_TOKEN=<token>

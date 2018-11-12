@@ -1,6 +1,5 @@
 package groovy.github
 
-import com.anotherchrisberry.spock.extensions.retry.RetryOnFailure
 import groovy.github.helpers.CreatePRHelper
 import groovy.github.helpers.UpdatePRHelper
 import groovy.util.logging.Slf4j
@@ -8,19 +7,16 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
-@RetryOnFailure()
 class CreatePRTests extends Specification {
 
     def setupSpec() {
-        //do any overall test set up necessary here
+        //any test specific set up goes here
     }
 
     @Unroll("('#owner', '#repo', '#jsonObject')")
     def "Assert success on create PR"() {
 
-        log.info("Asserting success on creating a PR for owner(%s), repo" +
-                "(%s),"
-                + ".\n ", owner, repo);
+        log.info("Asserting success on creating a PR for $owner, $repo");
 
         def createPRResponse = CreatePRHelper.makeCreatePRCall(owner, repo, jsonObject);
         def pullRequestObject = CreatePRHelper.createPR(owner, repo, jsonObject, createPRResponse)
@@ -32,11 +28,13 @@ class CreatePRTests extends Specification {
         assert pullRequestObject.getProperty("user").get("login") == owner
 
         cleanup:
-        UpdatePRHelper.closePR(owner, repo, ["title": "new title",
-                                             "body" : "updated body",
-                                             "state": "closed",
-                                             "base" : "master"],
-                pullRequestObject.getProperty("number"))
+        if (pullRequestObject != null) {
+            UpdatePRHelper.closePR(owner, repo, ["title": "new title",
+                                                 "body" : "updated body",
+                                                 "state": "closed",
+                                                 "base" : "master"],
+                    pullRequestObject.getProperty("number"))
+        }
 
         where:
         [owner, repo, jsonObject] << [
@@ -53,12 +51,11 @@ class CreatePRTests extends Specification {
     def "Assert failure on create PR when it is missing required information"() {
 
         log.info("Asserting failure on create PR when it is missing required information"
-                + " owner" + "(%s), repo(%s)" +
-                ".\n ", owner, repo);
+                + " $owner, $repo");
         def ex
         try {
             CreatePRHelper.createPR(owner, repo, jsonObject)
-        } catch (Exception exception) {
+        } catch (GroovyRuntimeException exception) {
             ex = exception
         }
 

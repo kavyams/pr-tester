@@ -1,6 +1,5 @@
 package groovy.github
 
-import com.anotherchrisberry.spock.extensions.retry.RetryOnFailure
 import groovy.github.helpers.CreatePRHelper
 import groovy.github.helpers.UpdatePRHelper
 import groovy.util.logging.Slf4j
@@ -8,12 +7,10 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
-@RetryOnFailure(times = 2, delaySeconds = 10)
 class UpdatePRTests extends Specification {
 
-
     def setupSpec() {
-        //do any overall test set up necessary here
+        //set up any test specific tests
     }
 
     @Unroll("('#owner', '#repo', '#jsonObject')")
@@ -22,8 +19,7 @@ class UpdatePRTests extends Specification {
                 [title: "Awesome new feature", head: "random",
                  base : "master", body: "This is a body"])
 
-        log.info("Asserting success on updating a PR for owner(%s), repo(%s),"
-                + ".\n ", owner, repo);
+        log.info("Asserting success on updating a PR for $owner, $repo");
 
         def updatePullRequestObject = UpdatePRHelper.updatePR(owner, repo,
                 jsonObject, pullRequestObject.getProperty("number"))
@@ -39,11 +35,13 @@ class UpdatePRTests extends Specification {
 
 
         cleanup:
-        UpdatePRHelper.closePR(owner, repo, ["title": "new title",
-                                             "body" : "updated body",
-                                             "state": "closed",
-                                             "base" : "master"],
-                pullRequestObject.getProperty("number"))
+        if (pullRequestObject != null) {
+            UpdatePRHelper.closePR(owner, repo, ["title": "new title",
+                                                 "body" : "updated body",
+                                                 "state": "closed",
+                                                 "base" : "master"],
+                    pullRequestObject.getProperty("number"))
+        }
 
         where:
         [owner, repo, jsonObject] << [

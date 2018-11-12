@@ -18,8 +18,7 @@ class ListPRTests extends Specification {
     @Unroll("('#owner', '#repo', '#state')")
     def "Assert that listed PRs match expected state"() {
 
-        log.info("Asserting state of listed PRs for owner(%s), repo(%s), " +
-                "state" + "(%s)" + " " + ".\n ", owner, repo, state);
+        log.info("Asserting state of listed PRs for $owner, $repo, $state");
 
         def states = ListPRHelper.getPRStates(owner, repo, state);
 
@@ -39,9 +38,7 @@ class ListPRTests extends Specification {
     def "Assert that commits are listed in decreasing order of recency from the list PR API"() {
 
         log.info("Testing that list PR API response returns commits in " +
-                "(%s) order of recency of (%s)" + " owner" + "" +
-                "(%s), repo(%s)" +
-                ".\n ", direction, sortBy, owner, repo);
+                "$direction order of recency of $sortBy, $owner, $repo");
 
         def commitDates = ListPRHelper.getOrderedCommitDates(owner, repo, sortBy, direction);
 

@@ -17,8 +17,7 @@ class SinglePRTests extends Specification {
     @Unroll("('#owner', '#repo', '#prNumber')")
     def "Assert on PR specific info such as author name, created date, and title"() {
 
-        log.info("Asserting PR specific info for owner(%s), repo(%s), prNumber(%d)" + "\n ",
-                owner, repo, prNumber);
+        log.info("Asserting PR specific info for $owner, $repo, $prNumber");
 
         def pullRequestObject = SinglePRHelper.getSinglePR(owner, repo,
                 prNumber);
