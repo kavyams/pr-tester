@@ -1,9 +1,13 @@
 GitHub PR API Automation Framework
 ==================================
 
-This is a purpose built framework designed to test Github PR APIs. It does the following -
-* This extensible framework allows users to add tests against Github APIs easily by separating test setup logic from business logic. 
+This Groovy-based test framework is designed to test Github PR APIs. It does the following -
+* It allows users to add tests against Github APIs easily by separating test setup logic from business logic. This includes below functionality: 
+    * Separate out functionality for making HTTP API calls.
+    * Allow using API keys/credentials for authenticated calls.
+    * Fail loudly in case of errors with HTTP communication.
 * It provides an implementation of Groovy Object that users can use to populate any data fields of interest.
+    * Instead of returning bare JSON responses from the API, the framework makes it easier to visualize the data object being returned.
 * It has the ability to run tests in parallel. 
 * It also provides meaningful error messages and allows for configurable retries in case of failures.
 
@@ -11,6 +15,16 @@ The framework does not do the following -
 * Define extensive data objects that include all the information present in an API response. Instead, it gives users the flexibility to configure important parts of the response in the form of an extensible data object interface.
 * It makes live network calls and asserts on real API responses instead of using mock data for the purposes of this demo
 * It is outside the scope of this test setup to run these tests on every new PR to the specified repo.
+
+Technologies used
+-----------------
+* **Spock test framework**: Spock is a JUnit based test framework that helps with creating easy to write, readable tests.
+It provides surrounding context around a test, thus resulting in easily understanding how to fix a failure. It also has built in 
+mocking and stubbing capabilities.
+* **Groovy programming language**: Spock framework supports both Java and Groovy. I picked Groovy because it 
+has better readability and results in more compact code.
+* **Gradle**: Gradle makes dependency management easier and allows for some portability. It also provides the ability to run 
+tests via the command line.
 
 Primary use cases of the framework
 ------------------------------------

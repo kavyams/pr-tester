@@ -32,7 +32,7 @@ class PullRequestResponseParserUtils {
     }
 
     public
-    static List<String> parseSpecificKey(pullRequestObjects, keyToExtract) {
+    static parseSpecificKey(pullRequestObjects, keyToExtract) {
         List<Object> values = new ArrayList<Object>()
         for (PullRequestObject pullRequestObject in pullRequestObjects) {
             values.add(pullRequestObject.getProperty(keyToExtract));
