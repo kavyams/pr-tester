@@ -13,6 +13,7 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
@@ -23,7 +24,21 @@ dependencies {
     compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7.+"
     compile 'org.slf4j:slf4j-log4j12:1.7.25'
     compile 'org.json:json:20141113'
+    testCompile 'com.anotherchrisberry:spock-retry:0.6.2'
 }
+
+tasks.withType(Test) {
+    // Tune throughput
+    maxParallelForks = project.hasProperty("test.maxParallelForks") ?
+            Integer.valueOf(project.getProperty("test.maxParallelForks")) :
+            35
+
+    // Pass any system properties to tests so they can be configured from
+    // Jenkins
+    systemProperties System.getProperties()
+    jvmArgs '-Xmx8G'
+}
+
 
 sourceSets {
     main {
@@ -35,11 +50,15 @@ sourceSets {
     test {
         groovy {
             // Control test source dirs with "testSources" Gradle property
-            // For whatever reason, gradle with groovy seems to totally ignore both the `--tests` command
-            // line switch or test filter specs specified here. Go figure.
             srcDirs = (project.hasProperty("testSources") ?
                     Eval.me(project.getProperty("testSources")) :
                     ['test'])
         }
+    }
+}
+
+test {
+    testLogging {
+        events "started", "passed", "skipped", "failed", "standardOut", "standardError"
     }
 }

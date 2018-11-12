@@ -1,6 +1,7 @@
 package groovy.github.helpers
 
 import groovy.github.constants.Constants
+import groovy.github.utils.PullRequestResponseParserUtils
 import groovy.github.utils.RestUtils
 import groovy.github.variables.EnvironmentVariables
 import groovyx.net.http.ContentType
@@ -20,7 +21,7 @@ class CreatePRHelper {
             response = makeCreatePRCall(owner, repo, jsonObject)
         }
         def keysToExtract = ["title", "user", "base", "head", "body", "number"]
-        return PullRequestResponseParser.parseGitHubServerResponse(response, keysToExtract)
+        return PullRequestResponseParserUtils.parseGitHubServerResponse(response, keysToExtract)
 
     }
 }

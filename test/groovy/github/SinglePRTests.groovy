@@ -1,11 +1,13 @@
 package groovy.github
 
+import com.anotherchrisberry.spock.extensions.retry.RetryOnFailure
 import groovy.github.helpers.SinglePRHelper
 import groovy.util.logging.Slf4j
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
+@RetryOnFailure(delaySeconds = 10)
 class SinglePRTests extends Specification {
 
     def setupSpec() {

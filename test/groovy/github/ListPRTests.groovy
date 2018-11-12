@@ -1,16 +1,18 @@
 package groovy.github
 
+import com.anotherchrisberry.spock.extensions.retry.RetryOnFailure
 import groovy.github.helpers.ListPRHelper
 import groovy.util.logging.Slf4j
 import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
+@RetryOnFailure(times = 2)
 class ListPRTests extends Specification {
 
 
     def setupSpec() {
-        //do any set up necessary here
+        //do any overall test set up necessary here
     }
 
     @Unroll("('#owner', '#repo', '#state')")
@@ -33,14 +35,15 @@ class ListPRTests extends Specification {
         ].combinations()
     }
 
-    @Unroll("('#owner', '#repo')")
+    @Unroll("('#owner', '#repo', '#sortBy', '#direction)")
     def "Assert that commits are listed in decreasing order of recency from the list PR API"() {
 
         log.info("Testing that list PR API response returns commits in " +
-                "decreasing order of recency" + " owner" + "(%s), repo(%s)" +
-                ".\n ", owner, repo);
+                "(%s) order of recency of (%s)" + " owner" + "" +
+                "(%s), repo(%s)" +
+                ".\n ", direction, sortBy, owner, repo);
 
-        def commitDates = ListPRHelper.getOrderedCommitDates(owner, repo);
+        def commitDates = ListPRHelper.getOrderedCommitDates(owner, repo, sortBy, direction);
 
 
         expect:
@@ -49,9 +52,11 @@ class ListPRTests extends Specification {
         }
 
         where:
-        [owner, repo] << [
+        [owner, repo, sortBy, direction] << [
                 ["GoogleChrome"],
-                ["puppeteer"]
+                ["puppeteer"],
+                ["created", "updated"],
+                ["desc"]
         ].combinations()
     }
 }

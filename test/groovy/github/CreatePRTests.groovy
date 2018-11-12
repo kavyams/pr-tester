@@ -1,5 +1,6 @@
 package groovy.github
 
+import com.anotherchrisberry.spock.extensions.retry.RetryOnFailure
 import groovy.github.helpers.CreatePRHelper
 import groovy.github.helpers.UpdatePRHelper
 import groovy.util.logging.Slf4j
@@ -7,16 +8,18 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 @Slf4j
+@RetryOnFailure()
 class CreatePRTests extends Specification {
 
     def setupSpec() {
-        //do any set up necessary here
+        //do any overall test set up necessary here
     }
 
     @Unroll("('#owner', '#repo', '#jsonObject')")
     def "Assert success on create PR"() {
 
-        log.info("Asserting success on creating a PR for owner(%s), repo(%s),"
+        log.info("Asserting success on creating a PR for owner(%s), repo" +
+                "(%s),"
                 + ".\n ", owner, repo);
 
         def createPRResponse = CreatePRHelper.makeCreatePRCall(owner, repo, jsonObject);
@@ -29,10 +32,10 @@ class CreatePRTests extends Specification {
         assert pullRequestObject.getProperty("user").get("login") == owner
 
         cleanup:
-        UpdatePRHelper.deletePR(owner, repo, ["title": "new title",
-                                              "body" : "updated body",
-                                              "state": "closed",
-                                              "base" : "master"],
+        UpdatePRHelper.closePR(owner, repo, ["title": "new title",
+                                             "body" : "updated body",
+                                             "state": "closed",
+                                             "base" : "master"],
                 pullRequestObject.getProperty("number"))
 
         where:

@@ -1,6 +1,7 @@
 package groovy.github.helpers
 
 import groovy.github.constants.Constants
+import groovy.github.utils.PullRequestResponseParserUtils
 import groovy.github.utils.RestUtils
 import groovyx.net.http.ContentType
 
@@ -14,7 +15,7 @@ class SinglePRHelper {
     def static getSinglePR(owner, repo, prNumber) {
         def singlePRResponse = makeSinglePRCall(owner, repo, prNumber)
         def keysToExtract = ["number", "title", "user", "_links"]
-        return PullRequestResponseParser.parseGitHubServerResponse(singlePRResponse, keysToExtract)
+        return PullRequestResponseParserUtils.parseGitHubServerResponse(singlePRResponse, keysToExtract)
 
     }
 
